@@ -1,0 +1,37 @@
+#include<glut.h>
+void display(void)
+{
+int i,j;
+glClear(GL_COLOR_BUFFER_BIT);
+glClearColor (1,1,1,1);
+for(i=0;i<8;i++){
+for(j=0;j<8;j++){
+if((i+j)%2==0)
+glColor3f(0.0,0.0,0.0);
+else
+glColor3f(1.0,1.0,1.0);
+glBegin(GL_QUADS);
+glVertex2f(i*5,j*5);
+glVertex2f((i+1)*5,j*5);
+glVertex2f((i+1)*5,(j+1)*5);
+glVertex2f(i*5,(j+1)*5);
+glEnd();
+}
+}
+glFlush();
+}
+void myinit()
+{
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+gluOrtho2D(0,40,0,40);
+glMatrixMode(GL_MODELVIEW);
+}
+int main()
+{
+glutInitWindowSize(500, 500);
+glutCreateWindow("Chess");
+glutDisplayFunc(display);
+myinit();
+glutMainLoop();
+}
