@@ -1,0 +1,42 @@
+#include<glut.h>
+float size=10;
+void disp()
+{ glClear(GL_COLOR_BUFFER_BIT);
+glClearColor(0,0,0,0);
+glFlush();
+}
+void drawSquare(int x,int y)
+{
+glColor3f(1,0,0);
+glBegin(GL_POLYGON);
+glVertex2f(x+size,y+size);
+glVertex2f(x-size,y+size);
+glVertex2f(x-size,y-size);
+glVertex2f(x+size,y-size);
+glEnd();
+glFlush();
+}
+void myMouse(int b,int s,int x,int y)
+{
+if(b==GLUT_LEFT_BUTTON && s==GLUT_DOWN)
+drawSquare(x,y);
+if(b==GLUT_RIGHT_BUTTON && s==GLUT_DOWN)
+disp();
+}
+void init(int w,int h)
+{
+glViewport(0,0,w,h);
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+gluOrtho2D(0,w,h,0);
+glMatrixMode(GL_MODELVIEW);
+glutPostRedisplay();
+}
+int main(){
+glutInitWindowSize(500,500);
+glutCreateWindow("Square");
+glutDisplayFunc(disp);
+glutMouseFunc(myMouse);
+glutReshapeFunc(init);
+glutMainLoop();
+}
