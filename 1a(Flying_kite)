@@ -1,87 +1,66 @@
-//KITE FLYING
+#include "aa.h"
+
+
+
 #include<glut.h>
-void init()
-{
-glViewport(0,0,500,500);
-glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-gluOrtho2D(0,500,0,500);
-glMatrixMode(GL_MODELVIEW);
-}
-void delay()
-{
-int i,j,r;
-for(i=0;i<1000;i++)
-for(j=0;j<60000;j++)
-r=i*j*10;
-}
-void drawkite(float x,float y)
-{
-//to draw rhombus shape
-glColor3f(1.0,1.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(x-20,y+10);
-glVertex2f(x-20,y-40);
-glVertex2f(x+20,y-10);
-glVertex2f(x+20,y+40);
-glEnd();
-//to draw two cross lines
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);
-glVertex2f(x-20,y+10);
-glVertex2f(x+20,y-10);
-glVertex2f(x-20,y-40);
-glVertex2f(x+20,y+40);
-glEnd();
-glFlush();
-}
-//to draw a tail
-void drawstring(float x,float y)
-{glColor3f(1.0,0.0,1.0);
-glBegin(GL_LINES);
-glVertex2f(x-20,y-40);
-glVertex2f(x-30,y-80);
-glVertex2f(x-30,y-80);
-glVertex2f(x-50,y-120);
-glVertex2f(x-50,y-120);
-glVertex2f(x-80,y-150);
-glEnd();
-glFlush();
-}
+
+
+float i,j;
 void display()
 {
-glClear(GL_COLOR_BUFFER_BIT);
-float i=50,j=50;
-//loop to move kite to right
-while(j<=450)
-{ i=50;
-while(i<400)
+	glClear(GL_COLOR_BUFFER_BIT);
+	glLineWidth(4);
+	glColor3f(1,0,0);
+	glBegin(GL_POLYGON);
+	glVertex2f(0+i,0.5+j);
+	glVertex2f(0.5+i,0+j);
+	glVertex2f(0+i,0.5+j);
+	glVertex2f(-0.5+i,0+j);
+	glEnd();
+	
+	glColor3f(0,1,0);
+	glBegin(GL_LINES);
+	glVertex2f(-0.5+i,0+j);
+	glVertex2f(0.5+i,0+j);
+	glVertex2f(0.5+i,0+j);
+	glVertex2f(0+i,0.5+j);
+	glVertex2f(0+i,-0.5+j);
+	glEnd();
+
+	glColor3f(0,0,1);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(0+i,-0.5+j);
+	glVertex2f(0.25+i,-0.6+j);
+	glVertex2f(-0.25+i,-0.6+j);
+	glEnd();
+
+	glColor3f(0,0,0);
+	glBegin(GL_LINES);
+	glVertex2f(0+i,-0.5+j);
+	glVertex2f(0.8,-0.7);
+	glEnd();
+	glFlush();
+}
+
+void keys(unsigned char k,int x,int y)
 {
-drawkite(i,j);
-drawstring(i,j);
-glClear(GL_COLOR_BUFFER_BIT);
-delay();
-i=i+5;
-j=j+1;
+	if(k == 'l')
+		i -= 0.01;
+	if(k == 'r')
+		i += 0.01;
+	if(k == 'u')
+		j += 0.01;
+	if(k == 'd')
+		j -= 0.01;
+	display();
 }
-//loop to move kite to left
-while(i>100)
+
+
+void main()
 {
-drawkite(i,j);
-drawstring(i,j);
-glClear(GL_COLOR_BUFFER_BIT);
-delay();
-i=i-5;
-j=j+1;
-}
-}
-}
-int main( )
-{
-glutInitWindowSize(500,500);
-glutInitWindowPosition(50,50);
-glutCreateWindow("Kite Flying");
-glutDisplayFunc(display);
-init();
-glutMainLoop();
+	glutCreateWindow("kite");
+	glutDisplayFunc(display);
+	glutKeyboardFunc(keys);
+	glClearColor(1,1,1,1);
+	glutMainLoop();
 }
