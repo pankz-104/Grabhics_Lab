@@ -1,0 +1,55 @@
+#include <glut.h>
+#include <math.h>
+void ourfont(char c)
+{
+	float i;
+	float angle;
+	glColor3f(1,0,0);
+	glBegin(GL_QUAD_STRIP);
+	for(i=1;i<=9;i=i+0.5)
+	{
+		angle=3.14159/6*i;
+		glVertex2f(0.4*cos(angle)+0.5,0.4*sin(angle)+0.5);
+		glVertex2f(0.5*cos(angle)+0.5,0.5*sin(angle)+0.5);
+	}
+	glEnd();
+	glTranslatef(-0.1,0.12,0.0);
+	glBegin(GL_QUAD_STRIP);
+	for(i=9;i!=18;i=i+0.5)
+	{
+		angle=3.14159/6*i;	
+		glVertex2f(0.4*cos(angle)+0.5,-(0.4*sin(angle)+0.5));
+		glVertex2f(0.5*cos(angle)+0.5,-(0.5*sin(angle)+0.5));
+	}
+	glEnd();
+}
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	ourfont('s');
+	glFlush();
+}
+void myreshape(int w,int h)
+{
+	glViewport(0,0,w,h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	if(w<=h)
+		glOrtho(-2,2,-2*(GLfloat)h/(GLfloat)w,2*(GLfloat)h/(GLfloat)w,-10,10);
+	else
+		glOrtho(-2*(GLfloat)w/(GLfloat)h,2*(GLfloat)w/(GLfloat)h,-2,2,-10,10);
+		glMatrixMode(GL_MODELVIEW);
+		glutPostRedisplay();
+}
+void main()
+{
+	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);
+	glutInitWindowSize(500,500);
+	glutCreateWindow("font S");
+	glutReshapeFunc(myreshape);
+	glutDisplayFunc(display);
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(1,1,1,1);
+	glutMainLoop();
+}
