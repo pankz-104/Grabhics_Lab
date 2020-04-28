@@ -1,40 +1,48 @@
-#include<stdlib.h>
-#include<glut.h>
-void disp()
-{ glClear(GL_COLOR_BUFFER_BIT);
-glFlush();}
-void drawPoint(int x,int y)
+#include <glut.h>
+
+void drawPoint(int x, int y)
 {
-int r=rand()%3;
-int g=rand()%3;
-int b=rand()%3;
-glColor3f(r,g,b);
-glBegin(GL_POINTS);
-glVertex2f(x,y);
-glEnd();
-glFlush();
+	glColor3f(rand()%3,rand()%3,rand()%3);
+	glPointSize(3);
+	glBegin(GL_POINTS);
+		glVertex2f(x, y);
+	glEnd();
+	glFinish();
 }
-void myMouse(int b,int s,int x,int y)
+
+void myMouse(int btn, int state, int x, int y)
 {
-if(b==GLUT_LEFT_BUTTON && s==GLUT_DOWN)
-drawPoint(x,y);
-if(b==GLUT_RIGHT_BUTTON && s==GLUT_DOWN)
-disp();
+	
+	if(btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		drawPoint(x, y);
+	if(btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+		glutPostRedisplay();
+	if(btn == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN)
+		exit(0);	
 }
-void init()
+
+void display()
 {
-glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-gluOrtho2D(0,500,500,0);
-glMatrixMode(GL_MODELVIEW);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glFinish();
 }
-int main()
+
+void init(int w , int h)
 {
-glutInitWindowSize(500,500);
-glutCreateWindow("Square");
-glutDisplayFunc(disp);
-glutMouseFunc(myMouse);
-glutMotionFunc(drawPoint);
-init();
-glutMainLoop();
+	glViewport(0,0,w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0,w,h,0);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void main()
+{
+	glutCreateWindow("Points");
+	glutDisplayFunc(display);
+	glClearColor(1,1,1,1);
+	glutReshapeFunc(init);
+	glutMouseFunc(myMouse);
+	glutMotionFunc(drawPoint);
+	glutMainLoop();
 }
