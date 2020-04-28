@@ -1,0 +1,46 @@
+#include "wheel_move.h"
+
+
+#include<glut.h>
+#include<math.h>
+
+float r = 0.5,t = 0,i,t1;
+float x,y;
+
+void disp()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(1,0,0);
+	for(t=0;t<=360;t+=0.5)
+	{
+		x = r * cos(t);
+		y = r * sin(t);
+		glBegin(GL_POINTS);
+		glVertex2f(x+i,y);
+		glEnd();
+	}
+	glBegin(GL_LINES);
+	glVertex2f(r * cos(t1)+i, r * sin(t1));
+	glVertex2f(-(r * cos(t1))+i, -(r * sin(t1)));
+	glVertex2f(-(r * sin(t1))+i, r * cos(t1));
+	glVertex2f(r * sin(t1)+i, -(r * cos(t1)));
+	glEnd();
+	glFinish();
+}
+
+void rotate()
+{
+	 i -= 0.001;
+	 if(i<=-1.5) i=+1;
+	 t1-=0.01;
+	 disp();
+}
+
+void main()
+{
+	glutCreateWindow("circle with spike");
+	glutDisplayFunc(disp);
+	glutIdleFunc(rotate);
+	glClearColor(1,1,1,1);
+	glutMainLoop();
+}
