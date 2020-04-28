@@ -1,46 +1,44 @@
-#include<glut.h>
-#include<math.h>
-void ourFont(char c)
+
+#include< glut.h>
+#include<stdio.h>
+void mydisplay()
 {
-float i;
-float angle;
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_QUAD_STRIP);
-for(i=2;i<=10;i=i+0.5)
-{ angle=3.14159/6.0*i;
-glVertex2f(0.4*cos(angle)+0.5,0.4*sin(angle)+0.5);
-glVertex2f(0.5*cos(angle)+0.5,0.5*sin(angle)+0.5);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glFlush();
 }
-glEnd();
-glTranslatef(-0.1,0.12,0.0);
-glBegin(GL_QUAD_STRIP);
-glEnd();
-}
-void display(void)
-{glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-glLoadIdentity();
-ourFont('C');
-glFlush();
-}
-void myReshape(int w,int h)
+void demomenu(int id)
 {
-glViewport(0,0,w,h);
-glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-if(w<=h)
-glOrtho(-2.0,2.0,-2.0*(GLfloat)h/(GLfloat)w,2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0);
-else
-glOrtho(-2.0*(GLfloat)w/(GLfloat)h,2.0*(GLfloat)w/(GLfloat)h,-2.0,2.0,-10.0,10.0);
-glMatrixMode(GL_MODELVIEW);
-glutPostRedisplay();
+	if(id==1) exit(0);
+}
+void editmenu(int id)
+{ 
+	if(id==5) printf("cut\n");
+	if(id==6) printf("copy\n");
+	if(id==7) printf("paste\n");
+}
+void sizemenu(int id)
+{
+	if(id==2) printf("normal\n");
+	if(id==3) printf("print\n");
+	if(id==4) printf("web\n");
 }
 void main()
-{
-glutInitWindowSize(500,500);
-glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);
-glutCreateWindow("letter s");
-glutReshapeFunc(myReshape);
-glutDisplayFunc(display);glEnable(GL_DEPTH_TEST);
-glClearColor(1.0,1.0,1.0,1.0);
-glutMainLoop();
+{	int submenu1, submenu2;
+    glutInitWindowSize(500,500);
+	glutCreateWindow("menu");
+	submenu1=glutCreateMenu(sizemenu);
+	glutAddMenuEntry("normal",2);
+	glutAddMenuEntry("print",3);
+	glutAddMenuEntry("web",4);
+	submenu2=glutCreateMenu(editmenu);
+	glutAddMenuEntry("cut",5);
+	glutAddMenuEntry("copy",6);
+	glutAddMenuEntry("paste",7);
+	glutCreateMenu(demomenu);
+	glutAddMenuEntry("quit",1);
+	glutAddSubMenu("view",submenu1);
+	glutAddSubMenu("edit",submenu2);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutDisplayFunc(mydisplay);
+	glutMainLoop();  
 }
