@@ -1,0 +1,71 @@
+#include<glut.h>
+
+void disp()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glFinish();
+}
+
+void init()
+{
+	glColor3f(0,0,0);
+	glNewList(1,GL_COMPILE);
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glColor3f(1,0,1);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(0,0);
+	glVertex2f(-2,-2);
+	glVertex2f(2,-2);
+	glEnd();
+	glEndList();
+	
+	glColor3f(0,1,1);
+	glNewList(2,GL_COMPILE);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glBegin(GL_POLYGON);
+		glVertex2f(-0.5,-0.8);
+		glVertex2f(0.5,-0.8);
+		glVertex2f(0.5,0.8);
+		glVertex2f(-0.5,0.8);
+	glEnd();
+	glEndList();
+
+	glNewList(3,GL_COMPILE);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0,0,1);
+	glutSolidTeapot(0.5);
+	glEndList();
+}
+
+void submenu(int id)
+{
+	if(id == 1) glCallList(1); glFlush();
+	if(id == 2) glCallList(2); glFlush();
+	if(id == 3) glCallList(3); glFlush();
+}
+
+void mainmenu(int id)
+{
+	if(id == 4) exit(0);
+}
+
+void main()
+{
+	glutCreateWindow("disp_list");
+
+	glClearColor(0,0,0,0);
+	//submenu
+	int submenuid = glutCreateMenu(submenu);
+	glutAddMenuEntry("triangle",1);
+	glutAddMenuEntry("rectangle",2);
+	glutAddMenuEntry("teapot",3);
+	//mainmenu
+	glutCreateMenu(mainmenu);
+	glutAddMenuEntry("quit",4);
+	glutAddSubMenu("objects",submenuid);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+		glutDisplayFunc(disp);
+	init();
+	glutMainLoop();
+}
